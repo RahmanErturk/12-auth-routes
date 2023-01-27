@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Registrieren</h1>
+      <form onsubmit="handleForm(event)">
+        <p id="err-msg"></p>
+        <div class="mb-2">
+          <input id="email" type="email" placeholder="E-Mail Adresse" required/>
+        </div>
+        <div class="mb-2">
+          <input id="pass1" type="password" placeholder="Passwort" required/>
+        </div>
+        <div class="mb-2">
+          <input id="pass2" type="password" placeholder="Passwort" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrieren</button>
+      </form>
+      <script>
+        function handleForm(event) {
+          event.preventDefault();
+          const email = document.querySelector("#email");
+          const pass1 = document.querySelector("#pass1");
+
+          const pass2 = document.querySelector("#pass2");
+
+          if (pass1.value !== pass2.value) {
+            document.querySelector("#err-msg").innerText =
+              "Passworter stimmen nicht überein";
+          }
+
+          fetch("http://localhost:4040/auth/register", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email.value,
+              password: pass1.value,
+            }),
+          })
+            .then((res) => res.json())
+            .then((json) => (window.location.href = "index.html"));
+        }
+      </script>
+    </div>
+  </body>
+</html>
